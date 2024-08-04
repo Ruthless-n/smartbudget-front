@@ -35,7 +35,7 @@ export function RegisterPage() {
     const payload:UserFormPayload = {
       email,
       password,
-      first_name: lastName,
+      first_name: name,
       last_name: lastName,
       is_superuser: false,
       is_staff: false,
