@@ -16,3 +16,17 @@ export type User = {
   role: Role
 }
 
+
+export type UserFormPayload = {
+  password: string
+  first_name: string
+  last_name: string
+  email: string
+  is_staff: boolean
+  is_superuser: boolean
+  cpf: string
+  role_id: number | null
+}
+
+
+

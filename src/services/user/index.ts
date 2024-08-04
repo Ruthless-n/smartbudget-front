@@ -6,6 +6,7 @@ import Cookies from 'js-cookie'
 import { keyCurrentUser } from './keys'
 import { RawResponse } from '@entities/response'
 import parseResponseData from '@utils/parse-response-data'
+import { UserFormPayload } from './types'
 
 
 
@@ -34,6 +35,15 @@ export const useLogout = () => {
       },
     })
   }
+
+
+export const useCreateUser = () => {
+  return useMutation<any, AxiosError, UserFormPayload>({
+    mutationFn: (payload: UserFormPayload) => {
+      return api.post('/user/', payload).then((response) => parseResponseData(response) as any);
+    }
+  })
+}
 
 
 

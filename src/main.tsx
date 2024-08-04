@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { ReactQueryProvider as QueryClientProvider } from '@libs/react-query'
+import { Toaster } from "@/components/ui/sonner"
 import './index.css'
 import {
   createBrowserRouter,
@@ -40,6 +41,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider>
       <AuthProvider>
+        <Toaster />
         <RouterProvider router={router} />
       </AuthProvider>
     </QueryClientProvider>
