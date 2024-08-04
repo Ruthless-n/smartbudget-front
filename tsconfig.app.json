@@ -30,6 +30,9 @@
       "@config/*": ["./src/config/*"],
       "@entities/*": ["./src/entities/*"],
       "@utils/*": ["./src/utils/*"],
+      "@services/*": ["./src/services/*"],
+      "@auth/*": ["./src/auth/*"],
+      
     }
   },
   "include": ["src"]
