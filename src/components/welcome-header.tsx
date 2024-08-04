@@ -19,7 +19,7 @@ const WelcomeHeader = forwardRef<HTMLDivElement, WelcomeHeaderProps>((props, ref
   return (
     <div ref={ref} {...props} className="flex w-full items-center justify-between md:mt-8">
       <div className="flex w-full flex-col items-center justify-center gap-1">
-        <Text tag="h1" className="h2">
+        <Text tag="h1" className="h1">
           Olá, {user?.first_name}
         </Text>
       </div>
