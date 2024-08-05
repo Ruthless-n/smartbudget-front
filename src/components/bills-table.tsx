@@ -9,6 +9,7 @@ import {
 import { queryClient } from "@/lib/react-query";
 import { useDeleteBill } from "@/services/bill";
 import { keyListBills } from "@/services/bill/keys"
+import { keyCurrentUser } from "@/services/user/keys";
 import { Bill } from "@services/bill/types";
 import { Pencil, Trash } from "lucide-react";
 import { toast } from "sonner";
@@ -22,13 +23,15 @@ export function BillTable(props: BillTableProps) {
   const { bills, user_id } = props;
   const { mutate: deleteBill } = useDeleteBill()
   function handleDeleteBill(id_bill: number) {
-    console.log(id_bill);
-
     deleteBill(id_bill, {
       onSuccess: () => {
         toast.success("Conta deletada com sucesso.")
         queryClient.invalidateQueries({
           queryKey: keyListBills(user_id)
+        })
+
+        queryClient.invalidateQueries({
+          queryKey: keyCurrentUser()
         })
       },
       onError: () => {

@@ -12,6 +12,7 @@ import { LoginPage } from './pages/login/index.tsx'
 import { RegisterPage } from './pages/register/index.tsx'
 import { HomePage } from './pages/home/index.tsx'
 import RequireAuth from './layouts/require-auth.tsx'
+import { UsersPage } from './pages/users/index.tsx'
 
 
 const router = createBrowserRouter([
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/home",
         element: <HomePage />
+      },
+      {
+        path: "/users",
+        element: <UsersPage />
       }
     ]
   },

@@ -23,7 +23,7 @@ import { useCreateBill } from "@/services/bill";
 import { toast } from "sonner";
 import MoneyInput from "./money-input";
 import { queryClient } from "@/lib/react-query";
-import { keyListBills } from "@/services/bill/keys";
+import { keyGetTotal, keyListBills } from "@/services/bill/keys";
 // import { LoaderCircle } from 'lucide-react';
 
 
@@ -66,13 +66,20 @@ export function BillModalForm(props:InviteGuestsModalProps) {
       amount: parseFloat(amount)
     };
     
-    console.log(payload);
     createBill(payload, {
       onSuccess: (response) => {
         console.log(response.data);
         toast.success("Conta criada com sucesso!");
         queryClient.invalidateQueries({
           queryKey: keyListBills(user?.id)
+        })
+
+        queryClient.invalidateQueries({
+          queryKey: keyGetTotal()
+        })
+
+        queryClient.invalidateQueries({
+          queryKey: keyCurrentUser()
         })
       },
       onError: () => {

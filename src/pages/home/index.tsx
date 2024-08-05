@@ -1,14 +1,15 @@
 import { HeaderPage } from "@/components/header-page";
+import Text from '@/components/text'
 import WelcomeHeader from "@/components/welcome-header";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { BillModalForm } from "@/components/new-bill-modal-form";
-import { useListBills } from "@/services/bill";
 import { keyCurrentUser } from "@/services/user/keys";
 import { User } from "@/services/user/types";
 import { useQuery } from "@tanstack/react-query";
 import BillTable from "@/components/bills-table";
+import { useListBills } from "@/services/bill";
 
 
 export function HomePage() {
@@ -20,7 +21,6 @@ export function HomePage() {
 
   const userId = user?.id;
   const { data: bills } = useListBills(userId ? userId : -1);
-
   function openNewBillModal() {
     console.log(isNewBillOpen);
     setIsNewBillOpen(true);
@@ -59,6 +59,10 @@ export function HomePage() {
 
             <div>
               <BillTable bills={bills} user_id={user?.id}/>
+            </div>
+            <div>
+              <Text className="text-2xl font-medium text-gray-400">Gasto total: {user?.total_spent}</Text>
+
             </div>
           </section>
         </div>

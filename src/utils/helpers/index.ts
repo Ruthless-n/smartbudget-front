@@ -2,7 +2,6 @@ import { QueryKey } from '@tanstack/react-query'
 import axios from 'axios'
 import parseResponseData from '@utils/parse-response-data'
 import { Color } from '@entities/color'
-import { User } from '@user/services/types'
 
 export const getCookie = (name: string) => {
   const value = `; ${document.cookie}`
@@ -14,6 +13,22 @@ export const getCookie = (name: string) => {
 
   if (parts.length === 2) return parts.pop()?.split(';')?.shift()
 }
+
+export const formatCPF = (cpf: string) => {
+  // Remove all non-numeric characters
+  const cleanedCPF = cpf.replace(/\D/g, '');
+
+  // Ensure the cleaned CPF has 11 digits
+  if (cleanedCPF.length !== 11) {
+    throw new Error('Invalid CPF length');
+  }
+
+  // Format the CPF
+  const formattedCPF = cleanedCPF.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+
+  return formattedCPF;
+}
+
 
 export const queryKeyToUrl = (queryKey: QueryKey): string => {
   if (!Array.isArray(queryKey)) {
@@ -138,8 +153,4 @@ export function colorForAvatar(name: string): Color {
   return colors[index]
 }
 
-export const resolveUserAreaAccess = (user: User, areaName: string) => {
-  if (user.is_staff) return true
 
-  if (user.area.name === areaName) return true
-}

@@ -14,6 +14,7 @@ export type User = {
   is_superuser: boolean
   cpf: string
   role: Role
+  total_spent: number
 }
 
 

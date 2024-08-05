@@ -3,10 +3,10 @@ import { api } from '@/lib/axios'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
-import { keyCurrentUser } from './keys'
+import { keyCurrentUser, keyListUsers } from './keys'
 import { RawResponse } from '@entities/response'
 import parseResponseData from '@utils/parse-response-data'
-import { UserFormPayload } from './types'
+import { User, UserFormPayload } from './types'
 
 
 
@@ -59,4 +59,27 @@ export const useCurrentUser = () => {
       data: queryResult.data,
     }
 }
+
+
+export const useGetUsers = () => {
+  const queryResult = useQuery({
+    queryKey: keyListUsers(),
+    queryFn: () =>
+      api.get<RawResponse<User[]>>('/user/').then((response) => parseResponseData(response) as User[]),
+  })
+
+  return {
+    ...queryResult,
+    data: queryResult.data,
+  }
+}
+
+
+export const useDeleteUser = () => {
+  return useMutation<any, AxiosError, number>({
+    mutationFn: (id: number) => {
+      return api.delete(`/user/${id}`).then((response) => parseResponseData(response) as any);
+    },
+  });
+};
 

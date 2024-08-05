@@ -5,7 +5,7 @@ import { AxiosError } from 'axios'
 import parseResponseData from '@utils/parse-response-data'
 import { Bill, BillFormPayload } from './types'
 import { RawResponse } from '@/entities/response'
-import { keyListBills } from './keys'
+import { keyGetTotal, keyListBills } from './keys'
 
 
 
@@ -40,4 +40,23 @@ export const useDeleteBill = () => {
     },
   });
 };
+
+
+
+export const useGetTotalSpent = () => {
+  const queryResult = useQuery({
+    queryKey: keyGetTotal(),
+    queryFn: () =>
+      api
+        .get<RawResponse<any>>(`/bills/total/`)
+        .then((response) => parseResponseData(response)),
+  })
+
+  return {
+    ...queryResult,
+    data: queryResult.data || [],
+  }
+}
+
+
 

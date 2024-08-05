@@ -37,9 +37,9 @@ export function HeaderPage() {
         <div className="text-2xl">Smart&Budget</div>
       </div>
       <nav className="flex space-x-4">
-        <Link to="#" className="hover:text-gray-400">Minha área</Link>
-        <Link to="#" className="hover:text-gray-400">Contas</Link>
-        <Link to="#" className="hover:text-gray-400">Usuários</Link>
+        <Link to="/home" className="hover:text-gray-400">Minha área</Link>
+        <Link to="/" className="hover:text-gray-400">Contas</Link>
+        <Link to="/users" className="hover:text-gray-400">Usuários</Link>
       </nav>
       <div className="flex items-center space-x-4">
         <CircleUserRound size="1.5em" />
