@@ -21,6 +21,9 @@ import { LoaderCircle, X } from "lucide-react";
 import { useListStatus } from "@/services/status";
 import { useCreateBill } from "@/services/bill";
 import { toast } from "sonner";
+import MoneyInput from "./money-input";
+import { queryClient } from "@/lib/react-query";
+import { keyListBills } from "@/services/bill/keys";
 // import { LoaderCircle } from 'lucide-react';
 
 
@@ -43,6 +46,7 @@ export function BillModalForm(props:InviteGuestsModalProps) {
   const [dueDate, setDueDate] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
+  const [amount, setAmount] = useState('');
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -51,20 +55,25 @@ export function BillModalForm(props:InviteGuestsModalProps) {
     const payload: BillFormPayload = {
       bill_name: billName,
       due_date: new Date(dueDate),
-      responsible: user?.id,
-      category:
+      responsible_id: user?.id,
+      category_id:
         categories.find(
           (category_obj) => category_obj.category_name === category
         )?.id_category || null,
-      status: status_available.find(
+      status_id: status_available.find(
         (status_obj) => status_obj.status_name === status
       )?.id_status || null,
+      amount: parseFloat(amount)
     };
-  
+    
+    console.log(payload);
     createBill(payload, {
       onSuccess: (response) => {
         console.log(response.data);
         toast.success("Conta criada com sucesso!");
+        queryClient.invalidateQueries({
+          queryKey: keyListBills(user?.id)
+        })
       },
       onError: () => {
         toast.error("Ops! Algo deu errado.");
@@ -158,6 +167,13 @@ export function BillModalForm(props:InviteGuestsModalProps) {
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <Label className="text-gray-300">Valor</Label>
+                  <MoneyInput
+                    value={amount}
+                    onChange={setAmount}
+                  />
                 </div>
                 <div>
                   <Button

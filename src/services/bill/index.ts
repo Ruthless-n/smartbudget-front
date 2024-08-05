@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from '@/lib/axios'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import parseResponseData from '@utils/parse-response-data'
-import { BillFormPayload } from './types'
+import { Bill, BillFormPayload } from './types'
+import { RawResponse } from '@/entities/response'
+import { keyListBills } from './keys'
 
 
 
@@ -15,7 +17,27 @@ export const useCreateBill = () => {
   })
 }
 
+export const useListBills = (id: number) => {
+  const queryResult = useQuery({
+    queryKey: keyListBills(id),
+    queryFn: () =>
+      api
+        .get<RawResponse<Bill[]>>(`/bills/user/${id}`)
+        .then((response) => parseResponseData(response) as Bill[]),
+  })
+
+  return {
+    ...queryResult,
+    data: queryResult.data || [],
+  }
+}
 
 
-
+export const useDeleteBill = () => {
+  return useMutation<any, AxiosError, number>({
+    mutationFn: (id: number) => {
+      return api.delete(`/bills/${id}`).then((response) => parseResponseData(response) as any);
+    },
+  });
+};
 

@@ -1,24 +1,28 @@
 import { HeaderPage } from "@/components/header-page";
 import WelcomeHeader from "@/components/welcome-header";
-import {
-  Card,
-  CardContent,
-//   CardDescription,
-//   CardFooter,
-  CardHeader,
-//   CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { BillModalForm } from "@/components/new-bill-modal-form";
+import { useListBills } from "@/services/bill";
+import { keyCurrentUser } from "@/services/user/keys";
+import { User } from "@/services/user/types";
+import { useQuery } from "@tanstack/react-query";
+import BillTable from "@/components/bills-table";
+
 
 export function HomePage() {
-  const [isNewBillOpen, setIsNewBillOpen] = useState(false)
+  const [isNewBillOpen, setIsNewBillOpen] = useState(false);
+  const { data: user } = useQuery<User>({
+    queryKey: keyCurrentUser(),
+    // staleTime: Infinity,
+  });
 
+  const userId = user?.id;
+  const { data: bills } = useListBills(userId ? userId : -1);
 
-  function openNewBillModal(){
-    console.log(isNewBillOpen)
+  function openNewBillModal() {
+    console.log(isNewBillOpen);
     setIsNewBillOpen(true);
   }
 
@@ -36,34 +40,31 @@ export function HomePage() {
           <WelcomeHeader />
         </div>
         <div>
-          <section className="w-full flex flex-col  justify-start">
+          <section
+            className="w-full flex flex-col  justify-start gap-5
+          "
+          >
             <div className="flex w-full justify-between">
-                <div className="text-2xl text-gray-300">
-                    <span>Histórico de contas</span>
-                </div>
-                <Button 
-                  className="flex items-center space-x-2 bg-white text-gray-700 px-3 py-2 rounded"
-                  onClick={openNewBillModal}
-                >
-                  
-                    <Plus size="1.2em" />
-                    <span>Adicionar nova conta</span>
-                </Button>
-                </div>
+              <div className="text-2xl text-gray-300">
+                <span>Histórico de contas</span>
+              </div>
+              <Button
+                className="flex items-center space-x-2 bg-white text-gray-700 px-3 py-2 rounded"
+                onClick={openNewBillModal}
+              >
+                <Plus size="1.2em" />
+                <span>Adicionar nova conta</span>
+              </Button>
+            </div>
+
             <div>
-              <Card className="bg-transparent text-white border-none shadow-none">
-                <CardHeader className="flex flex-col items-center">
-                </CardHeader>
-                <CardContent>
-                 
-                </CardContent>
-              </Card>
+              <BillTable bills={bills} user_id={user?.id}/>
             </div>
           </section>
         </div>
 
         {isNewBillOpen && (
-            <BillModalForm   closeNewBillModal={closeNewBillModal}/>
+          <BillModalForm closeNewBillModal={closeNewBillModal} />
         )}
       </main>
     </div>

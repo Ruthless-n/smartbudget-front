@@ -1,3 +1,3 @@
 import { QueryKey } from '@tanstack/react-query'
 
-export const keyListBills = (): QueryKey => ['bills']
+export const keyListBills = (id: number | null | undefined): QueryKey => ['bills','user', id]

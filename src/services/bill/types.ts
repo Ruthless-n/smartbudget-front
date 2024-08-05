@@ -1,20 +1,26 @@
+import { Category } from "../category/types"
+import { Status } from "../status/types"
+import { User } from "../user/types"
+
 export type Bill = {
     id_bill: number
     due_date: string  
     payday: string    
     bill_name: string
-    responsible: number
-    category: number
-    status: number
+    responsible: User
+    category: Category
+    status: Status
+    amount: number
   }
 
 
 export type BillFormPayload  = {
     due_date: Date
     bill_name: string
-    responsible: number | null | undefined
-    category: number | null
-    status: number | null
+    responsible_id: number | null | undefined
+    category_id: number | null
+    status_id: number | null
+    amount: number
 }
 
 
